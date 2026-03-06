@@ -20,15 +20,19 @@ export default {
                 md: ["1.125rem", { lineHeight: "1.5", letterSpacing: "0.01em", fontWeight: "700" }]
             },
             fontFamily: {
-                heading: ["rubik-v2"],
-                paragraph: ["open sans"]
+                heading: ["Space Grotesk", "sans-serif"],
+                paragraph: ["Inter", "sans-serif"]
             },
             colors: {
                 destructive: "#EF4444",
                 "destructive-foreground": "#FFFFFF",
                 accent: "#10B981",
                 "accent-foreground": "#FFFFFF",
-                background: "#F9FAFB",
+                background: "#F8FAFC",
+                "section-background": "#F1F5F9",
+                "card-background": "#FFFFFF",
+                "input-background": "#F9FAFB",
+                "hover-background": "#EFF6FF",
                 secondary: "#4F46E5",
                 foreground: "#111827",
                 "secondary-foreground": "#FFFFFF",

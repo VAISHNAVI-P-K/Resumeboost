@@ -191,9 +191,9 @@ export default function AnalyzerPage() {
 
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Resume Upload */}
-            <div className="bg-white rounded-xl p-8 border border-foreground/5">
+            <div className="bg-white rounded-[12px] p-8 border border-foreground/5 shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-primary/10 rounded-[12px] flex items-center justify-center">
                   <FileText className="w-5 h-5 text-primary" />
                 </div>
                 <h2 className="font-heading text-xl text-foreground">Upload Resume</h2>
@@ -204,7 +204,7 @@ export default function AnalyzerPage() {
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
-                className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors ${
+                className={`border-2 border-dashed rounded-[12px] p-12 text-center transition-colors ${
                   dragActive
                     ? 'border-primary bg-primary/5'
                     : 'border-foreground/10 hover:border-primary/50'
@@ -218,7 +218,7 @@ export default function AnalyzerPage() {
                   className="hidden"
                 />
                 <label htmlFor="resume-upload" className="cursor-pointer">
-                  <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-primary/10 rounded-[12px] flex items-center justify-center mx-auto mb-4">
                     <Upload className="w-8 h-8 text-primary" />
                   </div>
                   {resumeFile ? (
@@ -250,9 +250,9 @@ export default function AnalyzerPage() {
             </div>
 
             {/* Job Description */}
-            <div className="bg-white rounded-xl p-8 border border-foreground/5">
+            <div className="bg-white rounded-[12px] p-8 border border-foreground/5 shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-secondary/10 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-secondary/10 rounded-[12px] flex items-center justify-center">
                   <FileText className="w-5 h-5 text-secondary" />
                 </div>
                 <div>

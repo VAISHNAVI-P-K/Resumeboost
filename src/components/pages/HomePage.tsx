@@ -82,7 +82,7 @@ function HeroSection() {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
-    <section ref={ref} className="relative w-full min-h-[110vh] flex flex-col items-center justify-center pt-32 pb-20 px-6 overflow-hidden">
+    <section ref={ref} className="relative w-full min-h-[110vh] flex flex-col items-center justify-center pt-32 pb-20 px-6 overflow-hidden bg-gradient-to-br from-background to-hover-background">
       <GridPattern />
       
       {/* Background Blobs */}
@@ -133,14 +133,14 @@ function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 w-full justify-center z-30"
         >
           <Link to="/analyzer" className="group relative">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-xl blur opacity-30 group-hover:opacity-75 transition duration-200"></div>
-            <button className="relative w-full sm:w-auto bg-primary text-white font-heading font-bold text-lg px-8 py-4 rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-[12px] blur opacity-30 group-hover:opacity-75 transition duration-200"></div>
+            <button className="relative w-full sm:w-auto bg-primary text-white font-heading font-bold text-lg px-8 py-4 rounded-[12px] hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
               Analyze My Resume
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </Link>
           <Link to="/templates">
-            <button className="w-full sm:w-auto bg-white text-foreground border border-foreground/10 font-heading font-bold text-lg px-8 py-4 rounded-xl hover:bg-foreground/5 transition-all">
+            <button className="w-full sm:w-auto bg-white text-foreground border border-foreground/10 font-heading font-bold text-lg px-8 py-4 rounded-[12px] hover:bg-hover-background transition-all shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
               View ATS Templates
             </button>
           </Link>
@@ -151,7 +151,7 @@ function HeroSection() {
           style={{ y: y1, opacity }}
           className="absolute top-1/2 -left-12 lg:left-0 hidden xl:block pointer-events-none z-0"
         >
-          <div className="bg-white p-6 rounded-2xl shadow-2xl border border-foreground/5 w-72 rotate-[-6deg]">
+          <div className="bg-white p-6 rounded-[12px] shadow-[0_8px_20px_rgba(0,0,0,0.06)] border border-foreground/5 w-72 rotate-[-6deg]">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600">
                 <Shield className="w-5 h-5" />
@@ -173,7 +173,7 @@ function HeroSection() {
           style={{ y: y2, opacity }}
           className="absolute top-2/3 -right-12 lg:right-0 hidden xl:block pointer-events-none z-0"
         >
-          <div className="bg-white p-6 rounded-2xl shadow-2xl border border-foreground/5 w-72 rotate-[6deg]">
+          <div className="bg-white p-6 rounded-[12px] shadow-[0_8px_20px_rgba(0,0,0,0.06)] border border-foreground/5 w-72 rotate-[6deg]">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent">
                 <CheckCircle className="w-5 h-5" />
@@ -235,7 +235,7 @@ function HeroSection() {
 
 function LogoTicker() {
   return (
-    <section className="w-full py-12 border-y border-foreground/5 bg-white overflow-hidden">
+    <section className="w-full py-12 border-y border-foreground/5 bg-white shadow-[0_8px_20px_rgba(0,0,0,0.06)] overflow-hidden">
       <div className="max-w-[100rem] mx-auto px-6 mb-8 text-center">
         <p className="text-sm font-heading text-foreground/40 uppercase tracking-widest">Optimized for all major ATS platforms</p>
       </div>
@@ -274,7 +274,7 @@ function ProblemStatementSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="w-full py-32 bg-background relative overflow-hidden">
+    <section ref={ref} className="w-full py-32 bg-section-background relative overflow-hidden">
       <div className="max-w-[100rem] mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
         <div className="relative z-10">
           <SectionLabel>The Problem</SectionLabel>
@@ -441,7 +441,7 @@ function StepCard({ step, index }: { step: any, index: number }) {
       initial={{ opacity: 0.5, scale: 0.95 }}
       animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0.5, scale: 0.95 }}
       transition={{ duration: 0.5 }}
-      className="group relative bg-background rounded-3xl p-8 md:p-12 border border-foreground/5 shadow-lg overflow-hidden"
+      className="group relative bg-section-background rounded-[12px] p-8 md:p-12 border border-foreground/5 shadow-[0_8px_20px_rgba(0,0,0,0.06)] overflow-hidden"
     >
       <div className={`absolute top-0 right-0 w-64 h-64 ${step.color} opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 transition-opacity duration-500 group-hover:opacity-10`} />
       
@@ -483,7 +483,7 @@ function FeatureBentoGrid() {
           {/* Large Feature - Keyword Match */}
           <motion.div 
             whileHover={{ y: -5 }}
-            className="md:col-span-2 md:row-span-1 bg-white rounded-3xl p-8 border border-foreground/5 shadow-sm relative overflow-hidden group"
+            className="md:col-span-2 md:row-span-1 bg-white rounded-[12px] p-8 border border-foreground/5 shadow-[0_8px_20px_rgba(0,0,0,0.06)] relative overflow-hidden group"
           >
             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
               <Target className="w-32 h-32" />
@@ -514,7 +514,7 @@ function FeatureBentoGrid() {
           {/* Tall Feature - Formatting */}
           <motion.div 
             whileHover={{ y: -5 }}
-            className="md:col-span-1 md:row-span-2 bg-gradient-to-b from-primary to-secondary text-white rounded-3xl p-8 shadow-lg relative overflow-hidden"
+            className="md:col-span-1 md:row-span-2 bg-gradient-to-b from-primary to-secondary text-white rounded-[12px] p-8 shadow-[0_8px_20px_rgba(0,0,0,0.06)] relative overflow-hidden"
           >
             <div className="relative z-10 h-full flex flex-col">
               <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-white mb-6">
@@ -547,7 +547,7 @@ function FeatureBentoGrid() {
           {/* Square Feature - Skills */}
           <motion.div 
             whileHover={{ y: -5 }}
-            className="md:col-span-1 md:row-span-1 bg-white rounded-3xl p-8 border border-foreground/5 shadow-sm relative overflow-hidden"
+            className="md:col-span-1 md:row-span-1 bg-white rounded-[12px] p-8 border border-foreground/5 shadow-[0_8px_20px_rgba(0,0,0,0.06)] relative overflow-hidden"
           >
             <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-6">
               <Zap className="w-6 h-6" />
@@ -559,7 +559,7 @@ function FeatureBentoGrid() {
           {/* Square Feature - Sections */}
           <motion.div 
             whileHover={{ y: -5 }}
-            className="md:col-span-1 md:row-span-1 bg-white rounded-3xl p-8 border border-foreground/5 shadow-sm relative overflow-hidden"
+            className="md:col-span-1 md:row-span-1 bg-white rounded-[12px] p-8 border border-foreground/5 shadow-[0_8px_20px_rgba(0,0,0,0.06)] relative overflow-hidden"
           >
             <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary mb-6">
               <FileText className="w-6 h-6" />
@@ -597,14 +597,14 @@ function InteractiveScoreSection() {
   }, [isInView]);
 
   return (
-    <section ref={ref} className="w-full py-32 bg-white border-y border-foreground/5">
+    <section ref={ref} className="w-full py-32 bg-white border-y border-foreground/5 shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
       <div className="max-w-[100rem] mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           
           {/* Visual Dashboard */}
           <div className="relative">
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-accent/20 rounded-[2rem] blur-2xl opacity-50" />
-            <div className="relative bg-background rounded-2xl border border-foreground/5 shadow-2xl p-8 md:p-12">
+            <div className="relative bg-section-background rounded-[12px] border border-foreground/5 shadow-[0_8px_20px_rgba(0,0,0,0.06)] p-8 md:p-12">
               <div className="flex items-center justify-between mb-8">
                 <div>
                   <h3 className="text-lg font-heading font-bold text-foreground">Optimization Report</h3>
@@ -616,11 +616,11 @@ function InteractiveScoreSection() {
               </div>
 
               <div className="grid grid-cols-2 gap-8 mb-12">
-                <div className="text-center p-6 bg-white rounded-xl border border-foreground/5">
+                <div className="text-center p-6 bg-white rounded-[12px] border border-foreground/5">
                   <div className="text-sm text-foreground/50 mb-2">Initial Score</div>
                   <div className="text-4xl md:text-5xl font-heading font-bold text-foreground/30">62%</div>
                 </div>
-                <div className="text-center p-6 bg-white rounded-xl border-2 border-accent/20 shadow-lg relative overflow-hidden">
+                <div className="text-center p-6 bg-white rounded-[12px] border-2 border-accent/20 shadow-[0_8px_20px_rgba(0,0,0,0.06)] relative overflow-hidden">
                   <div className="absolute inset-0 bg-accent/5" />
                   <div className="relative z-10">
                     <div className="text-sm text-accent mb-2 font-bold">Potential Score</div>
@@ -695,7 +695,7 @@ function InteractiveScoreSection() {
 
 function CtaSection() {
   return (
-    <section className="w-full py-32 bg-background relative overflow-hidden">
+    <section className="w-full py-32 bg-section-background relative overflow-hidden">
       <div className="absolute inset-0 bg-primary/5 skew-y-3 scale-110 origin-bottom-left" />
       
       <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
@@ -714,12 +714,12 @@ function CtaSection() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/analyzer" className="w-full sm:w-auto">
-              <button className="w-full bg-primary text-white font-heading font-bold text-xl px-10 py-5 rounded-xl shadow-xl hover:bg-primary/90 hover:scale-105 transition-all duration-300">
+              <button className="w-full bg-primary text-white font-heading font-bold text-xl px-10 py-5 rounded-[12px] shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:bg-primary/90 hover:scale-105 transition-all duration-300">
                 Optimize My Resume Now
               </button>
             </Link>
             <Link to="/templates" className="w-full sm:w-auto">
-              <button className="w-full bg-white text-foreground border border-foreground/10 font-heading font-bold text-xl px-10 py-5 rounded-xl hover:bg-foreground/5 transition-all duration-300">
+              <button className="w-full bg-white text-foreground border border-foreground/10 font-heading font-bold text-xl px-10 py-5 rounded-[12px] hover:bg-hover-background transition-all duration-300 shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
                 Browse Templates
               </button>
             </Link>

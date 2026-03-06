@@ -1,5 +1,33 @@
 @import './fonts.css';
 
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold tracking-tight;
+    letter-spacing: -0.02em;
+  }
+
+  p, span, a, li {
+    @apply font-paragraph;
+    line-height: 1.6;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-[12px] border border-foreground/5 shadow-[0_8px_20px_rgba(0,0,0,0.06)];
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground font-heading font-bold px-6 py-3 rounded-[12px] hover:bg-primary/90 transition-all;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-foreground border border-foreground/10 font-heading font-bold px-6 py-3 rounded-[12px] hover:bg-hover-background transition-all;
+  }
+}

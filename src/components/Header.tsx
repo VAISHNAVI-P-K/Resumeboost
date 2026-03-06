@@ -17,12 +17,12 @@ export default function Header() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="w-full bg-white border-b border-foreground/5 sticky top-0 z-50">
+    <header className="w-full bg-white border-b border-foreground/5 sticky top-0 z-50 shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
       <div className="max-w-[100rem] mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-primary rounded-[12px] flex items-center justify-center">
               <span className="font-heading text-lg text-primary-foreground">RB</span>
             </div>
             <span className="font-heading text-xl text-foreground">ResumeBoost</span>
@@ -48,7 +48,7 @@ export default function Header() {
           {/* CTA Button */}
           <div className="hidden md:block">
             <Link to="/analyzer">
-              <button className="bg-primary text-primary-foreground font-heading text-sm px-6 py-3 rounded-xl hover:bg-primary/90 transition-colors">
+              <button className="bg-primary text-primary-foreground font-heading text-sm px-6 py-3 rounded-[12px] hover:bg-primary/90 transition-colors shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
                 Analyze Resume
               </button>
             </Link>
@@ -94,7 +94,7 @@ export default function Header() {
                   </Link>
                 ))}
                 <Link to="/analyzer" onClick={() => setMobileMenuOpen(false)}>
-                  <button className="w-full bg-primary text-primary-foreground font-heading text-sm px-6 py-3 rounded-xl">
+                  <button className="w-full bg-primary text-primary-foreground font-heading text-sm px-6 py-3 rounded-[12px] shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
                     Analyze Resume
                   </button>
                 </Link>
