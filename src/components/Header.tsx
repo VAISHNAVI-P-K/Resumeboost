@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Image } from '@/components/ui/image';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -22,9 +23,13 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-[12px] flex items-center justify-center">
-              <span className="font-heading text-lg text-primary-foreground">RB</span>
-            </div>
+            <Image 
+              src="https://static.wixstatic.com/media/2e45bf_c35b83c7f7df469894a67d21b4e73e19~mv2.png" 
+              alt="ResumeBoost Logo" 
+              width={40}
+              height={40}
+              className="rounded-[12px]"
+            />
             <span className="font-heading text-xl text-foreground">ResumeBoost</span>
           </Link>
 

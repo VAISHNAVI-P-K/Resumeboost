@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Linkedin, Twitter, Github, Mail } from 'lucide-react';
+import { Image } from '@/components/ui/image';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -11,9 +12,13 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                <span className="font-heading text-lg text-primary-foreground">RB</span>
-              </div>
+              <Image 
+                src="https://static.wixstatic.com/media/2e45bf_c35b83c7f7df469894a67d21b4e73e19~mv2.png" 
+                alt="ResumeBoost Logo" 
+                width={40}
+                height={40}
+                className="rounded-xl"
+              />
               <span className="font-heading text-xl text-background">ResumeBoost</span>
             </div>
             <p className="font-paragraph text-sm text-background/70">
