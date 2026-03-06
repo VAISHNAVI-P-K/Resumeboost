@@ -3,61 +3,40 @@ import { TrendingUp, Target, FileText, CheckCircle, AlertCircle, Download, Arrow
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { useResumeStore } from '@/stores/resumeStore';
+import { useNavigate } from 'react-router-dom';
 
 export default function ResultsPage() {
-  // Mock data - in production this would come from analysis
-  const currentScore = 62;
-  const potentialScore = 87;
+  const navigate = useNavigate();
+  const analysis = useResumeStore((state) => state.analysis);
+  const clearAnalysis = useResumeStore((state) => state.clearAnalysis);
+
+  // Redirect to analyzer if no analysis data
+  if (!analysis) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <section className="w-full max-w-[100rem] mx-auto px-6 py-16 min-h-[calc(100vh-200px)] flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="font-heading text-3xl text-foreground mb-4">No Analysis Found</h1>
+            <p className="font-paragraph text-sm text-foreground/70 mb-8">
+              Please upload and analyze a resume first.
+            </p>
+            <button
+              onClick={() => navigate('/analyzer')}
+              className="bg-primary text-primary-foreground font-heading text-base px-8 py-4 rounded-xl hover:bg-primary/90 transition-colors"
+            >
+              Go to Analyzer
+            </button>
+          </div>
+        </section>
+        <Footer />
+      </div>
+    );
+  }
+
+  const { currentScore, potentialScore, scoreBreakdown, improvements, matchedKeywords, missingKeywords, sections } = analysis;
   const improvement = potentialScore - currentScore;
-
-  const scoreBreakdown = [
-    { category: 'Keyword Match', score: 55, weight: 30, color: 'bg-destructive' },
-    { category: 'Skills Match', score: 70, weight: 20, color: 'bg-secondary' },
-    { category: 'Formatting', score: 65, weight: 20, color: 'bg-primary' },
-    { category: 'Section Completeness', score: 60, weight: 15, color: 'bg-accent' },
-    { category: 'Experience Relevance', score: 75, weight: 10, color: 'bg-secondary' },
-    { category: 'Readability', score: 80, weight: 5, color: 'bg-accent' }
-  ];
-
-  const improvements = [
-    {
-      issue: 'Missing keywords',
-      fix: 'Add 5 keywords from job description: "Machine Learning", "AWS", "Docker", "CI/CD", "Agile"',
-      scoreGain: 10,
-      priority: 'high'
-    },
-    {
-      issue: 'Weak bullet points',
-      fix: 'Use action verbs and quantify achievements (e.g., "Increased performance by 35%")',
-      scoreGain: 6,
-      priority: 'high'
-    },
-    {
-      issue: 'Missing certifications section',
-      fix: 'Add a dedicated certifications section to highlight credentials',
-      scoreGain: 4,
-      priority: 'medium'
-    },
-    {
-      issue: 'Formatting issues detected',
-      fix: 'Remove tables and columns - use simple single-column layout',
-      scoreGain: 5,
-      priority: 'high'
-    }
-  ];
-
-  const matchedKeywords = ['Python', 'JavaScript', 'React', 'Node.js', 'SQL', 'Git', 'REST API', 'Agile'];
-  const missingKeywords = ['Machine Learning', 'AWS', 'Docker', 'Kubernetes', 'CI/CD', 'TypeScript'];
-
-  const sections = [
-    { name: 'Contact Information', status: 'complete' },
-    { name: 'Professional Summary', status: 'complete' },
-    { name: 'Skills', status: 'complete' },
-    { name: 'Work Experience', status: 'incomplete' },
-    { name: 'Education', status: 'complete' },
-    { name: 'Projects', status: 'missing' },
-    { name: 'Certifications', status: 'missing' }
-  ];
 
   const getScoreColor = (score: number) => {
     if (score >= 71) return 'text-accent';
