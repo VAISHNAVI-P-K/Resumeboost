@@ -314,6 +314,15 @@ export default function ResultsPage() {
                 <ArrowRight className="w-5 h-5" />
               </button>
             </Link>
+            <button
+              onClick={() => {
+                clearAnalysis();
+                navigate('/analyzer');
+              }}
+              className="bg-transparent text-foreground border-2 border-foreground font-heading text-base px-8 py-4 rounded-xl hover:bg-foreground/5 transition-colors"
+            >
+              Analyze Another Resume
+            </button>
           </motion.div>
         </motion.div>
       </section>
