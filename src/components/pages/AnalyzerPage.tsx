@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Upload, FileText, Loader2 } from 'lucide-react';
+import { Upload, FileText, Loader2, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -13,6 +13,7 @@ export default function AnalyzerPage() {
   const [jobDescription, setJobDescription] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [error, setError] = useState('');
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -28,46 +29,61 @@ export default function AnalyzerPage() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
+    setError('');
 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0];
-      if (file.type === 'application/pdf' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      if (file.type === 'application/pdf' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || file.type === 'text/plain') {
         setResumeFile(file);
+      } else {
+        setError('Please upload a PDF, DOCX, or TXT file');
       }
     }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError('');
     if (e.target.files && e.target.files[0]) {
-      setResumeFile(e.target.files[0]);
+      const file = e.target.files[0];
+      if (file.type === 'application/pdf' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || file.type === 'text/plain') {
+        setResumeFile(file);
+      } else {
+        setError('Please upload a PDF, DOCX, or TXT file');
+      }
     }
   };
 
   const extractTextFromFile = async (file: File): Promise<string> => {
-    if (file.type === 'application/pdf') {
-      // For PDF, we'll use a simple approach - in production, use pdfjs-dist
-      return `[PDF Content from ${file.name}]`;
+    if (file.type === 'text/plain') {
+      return await file.text();
+    } else if (file.type === 'application/pdf') {
+      // For PDF, return a placeholder - in production, use pdfjs-dist
+      return `[PDF: ${file.name}] - PDF parsing requires additional library. Using file name as content indicator.`;
     } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-      // For DOCX, we'll use a simple approach - in production, use docx library
-      return `[DOCX Content from ${file.name}]`;
+      // For DOCX, return a placeholder - in production, use docx library
+      return `[DOCX: ${file.name}] - DOCX parsing requires additional library. Using file name as content indicator.`;
     }
     return '';
   };
 
   const analyzeResume = async (resumeText: string, jobDesc: string) => {
+    // Normalize text
+    const normalizeText = (text: string) => text.toLowerCase().trim();
+    const normalizedResume = normalizeText(resumeText);
+    const normalizedJob = normalizeText(jobDesc);
+
     // Extract keywords from job description
-    const jobKeywords = jobDesc
-      .toLowerCase()
-      .split(/[\s,;.!?]+/)
-      .filter((word) => word.length > 3)
-      .slice(0, 20);
+    const jobKeywords = normalizedJob
+      .split(/[\s,;.!?()\\-\n]+/)
+      .filter((word) => word.length > 2 && !/^[0-9]+$/.test(word))
+      .filter((word, index, self) => self.indexOf(word) === index)
+      .slice(0, 25);
 
     // Extract keywords from resume
-    const resumeKeywords = resumeText
-      .toLowerCase()
-      .split(/[\s,;.!?]+/)
-      .filter((word) => word.length > 3)
-      .slice(0, 30);
+    const resumeKeywords = normalizedResume
+      .split(/[\s,;.!?()\\-\n]+/)
+      .filter((word) => word.length > 2 && !/^[0-9]+$/.test(word))
+      .filter((word, index, self) => self.indexOf(word) === index);
 
     // Find matched and missing keywords
     const matched = jobKeywords.filter((keyword) =>
@@ -75,76 +91,135 @@ export default function AnalyzerPage() {
     );
     const missing = jobKeywords.filter((keyword) => !matched.includes(keyword));
 
-    // Calculate scores based on keyword match and other factors
-    const keywordMatchScore = Math.min(100, Math.round((matched.length / jobKeywords.length) * 100));
-    const skillsScore = Math.round(Math.random() * 30 + 50);
-    const formattingScore = Math.round(Math.random() * 30 + 50);
-    const completenessScore = Math.round(Math.random() * 30 + 40);
-    const relevanceScore = Math.round(Math.random() * 30 + 60);
-    const readabilityScore = Math.round(Math.random() * 20 + 70);
+    // Calculate scores based on actual resume content analysis
+    const keywordMatchScore = jobKeywords.length > 0 ? Math.min(100, Math.round((matched.length / jobKeywords.length) * 100)) : 50;
+    
+    // Check for common resume sections
+    const hasSummary = /summary|objective|profile/.test(normalizedResume);
+    const hasExperience = /experience|employment|work|position|role/.test(normalizedResume);
+    const hasEducation = /education|degree|university|college|school/.test(normalizedResume);
+    const hasSkills = /skills|technical|proficiency|expertise/.test(normalizedResume);
+    const hasCertifications = /certification|certified|certificate/.test(normalizedResume);
+    const hasProjects = /project|portfolio|github|developed|built/.test(normalizedResume);
+    
+    // Count action verbs (common in good resumes)
+    const actionVerbs = ['managed', 'developed', 'created', 'implemented', 'designed', 'led', 'improved', 'increased', 'reduced', 'achieved', 'delivered', 'coordinated', 'analyzed', 'optimized', 'launched'];
+    const actionVerbCount = actionVerbs.filter(verb => normalizedResume.includes(verb)).length;
+    
+    // Check for quantifiable achievements
+    const hasMetrics = /\d+%|\$\d+|\d+x|\d+\s*(million|thousand|hundred|k|m)/.test(normalizedResume);
+    
+    // Calculate section completeness score
+    const completeSections = [hasSummary, hasExperience, hasEducation, hasSkills].filter(Boolean).length;
+    const completenessScore = Math.round((completeSections / 4) * 100);
+    
+    // Calculate skills match score
+    const skillsScore = Math.min(100, Math.round((actionVerbCount / 15) * 100));
+    
+    // Calculate formatting score (based on length and structure)
+    const lines = resumeText.split('\n').length;
+    const avgLineLength = resumeText.length / Math.max(lines, 1);
+    const formattingScore = Math.min(100, Math.round((lines / 30) * 50 + (avgLineLength > 20 && avgLineLength < 100 ? 50 : 20)));
+    
+    // Calculate relevance score
+    const relevanceScore = hasMetrics ? Math.min(100, keywordMatchScore + 15) : keywordMatchScore;
+    
+    // Calculate readability score
+    const readabilityScore = Math.min(100, Math.round((lines / 50) * 100));
 
     // Calculate weighted score
     const currentScore = Math.round(
       (keywordMatchScore * 0.3 +
         skillsScore * 0.2 +
-        formattingScore * 0.2 +
+        formattingScore * 0.15 +
         completenessScore * 0.15 +
         relevanceScore * 0.1 +
-        readabilityScore * 0.05) /
-        100 *
-        100
+        readabilityScore * 0.1)
     );
 
-    const potentialScore = Math.min(100, currentScore + 25);
+    const potentialScore = Math.min(100, currentScore + (missing.length > 0 ? Math.min(20, missing.length * 2) : 10));
+
+    // Determine section statuses
+    const sections = [
+      { name: 'Contact Information', status: (resumeText.includes('@') || /\d{3}[-.]?\d{3}[-.]?\d{4}/.test(resumeText)) ? 'complete' as const : 'incomplete' as const },
+      { name: 'Professional Summary', status: hasSummary ? 'complete' as const : 'missing' as const },
+      { name: 'Skills', status: hasSkills ? 'complete' as const : 'missing' as const },
+      { name: 'Work Experience', status: hasExperience ? 'complete' as const : 'incomplete' as const },
+      { name: 'Education', status: hasEducation ? 'complete' as const : 'missing' as const },
+      { name: 'Projects', status: hasProjects ? 'complete' as const : 'missing' as const },
+      { name: 'Certifications', status: hasCertifications ? 'complete' as const : 'missing' as const },
+    ];
+
+    // Generate improvements based on analysis
+    const improvements = [];
+    
+    if (missing.length > 0) {
+      improvements.push({
+        issue: 'Missing critical keywords',
+        fix: `Add these keywords from the job description: "${missing.slice(0, 5).join('", "')}"`,
+        scoreGain: Math.min(10, missing.length * 2),
+        priority: 'high' as const,
+      });
+    }
+    
+    if (actionVerbCount < 5) {
+      improvements.push({
+        issue: 'Weak action verbs',
+        fix: 'Use strong action verbs like "Managed", "Developed", "Implemented" to start bullet points',
+        scoreGain: 8,
+        priority: 'high' as const,
+      });
+    }
+    
+    if (!hasMetrics) {
+      improvements.push({
+        issue: 'Missing quantifiable achievements',
+        fix: 'Add metrics and numbers to achievements (e.g., "Increased sales by 35%", "Reduced costs by $50K")',
+        scoreGain: 10,
+        priority: 'high' as const,
+      });
+    }
+    
+    if (!hasCertifications) {
+      improvements.push({
+        issue: 'No certifications section',
+        fix: 'Add a dedicated certifications section to highlight professional credentials',
+        scoreGain: 5,
+        priority: 'medium' as const,
+      });
+    }
+    
+    if (!hasSummary) {
+      improvements.push({
+        issue: 'Missing professional summary',
+        fix: 'Add a brief professional summary at the top highlighting your key strengths',
+        scoreGain: 6,
+        priority: 'medium' as const,
+      });
+    }
 
     const analysis = {
-      currentScore,
-      potentialScore,
+      currentScore: Math.max(0, Math.min(100, currentScore)),
+      potentialScore: Math.max(0, Math.min(100, potentialScore)),
       scoreBreakdown: [
         { category: 'Keyword Match', score: keywordMatchScore, weight: 30, color: 'bg-destructive' },
-        { category: 'Skills Match', score: skillsScore, weight: 20, color: 'bg-secondary' },
-        { category: 'Formatting', score: formattingScore, weight: 20, color: 'bg-primary' },
+        { category: 'Skills & Action Verbs', score: skillsScore, weight: 20, color: 'bg-secondary' },
+        { category: 'Formatting', score: formattingScore, weight: 15, color: 'bg-primary' },
         { category: 'Section Completeness', score: completenessScore, weight: 15, color: 'bg-accent' },
         { category: 'Experience Relevance', score: relevanceScore, weight: 10, color: 'bg-secondary' },
-        { category: 'Readability', score: readabilityScore, weight: 5, color: 'bg-accent' },
+        { category: 'Readability', score: readabilityScore, weight: 10, color: 'bg-accent' },
       ],
-      improvements: [
+      improvements: improvements.length > 0 ? improvements : [
         {
-          issue: 'Missing keywords',
-          fix: `Add ${Math.min(5, missing.length)} keywords from job description: "${missing.slice(0, 5).join('", "')}"`,
-          scoreGain: Math.min(10, missing.length * 2),
-          priority: 'high' as const,
-        },
-        {
-          issue: 'Weak bullet points',
-          fix: 'Use action verbs and quantify achievements (e.g., "Increased performance by 35%")',
-          scoreGain: 6,
-          priority: 'high' as const,
-        },
-        {
-          issue: 'Missing certifications section',
-          fix: 'Add a dedicated certifications section to highlight credentials',
-          scoreGain: 4,
-          priority: 'medium' as const,
-        },
-        {
-          issue: 'Formatting issues detected',
-          fix: 'Remove tables and columns - use simple single-column layout',
+          issue: 'Excellent resume',
+          fix: 'Your resume is well-structured. Consider adding more specific metrics to further improve ATS compatibility.',
           scoreGain: 5,
-          priority: 'high' as const,
+          priority: 'low' as const,
         },
       ],
-      matchedKeywords: matched.slice(0, 8),
-      missingKeywords: missing.slice(0, 6),
-      sections: [
-        { name: 'Contact Information', status: 'complete' as const },
-        { name: 'Professional Summary', status: 'complete' as const },
-        { name: 'Skills', status: 'complete' as const },
-        { name: 'Work Experience', status: 'incomplete' as const },
-        { name: 'Education', status: 'complete' as const },
-        { name: 'Projects', status: 'missing' as const },
-        { name: 'Certifications', status: 'missing' as const },
-      ],
+      matchedKeywords: matched.slice(0, 10),
+      missingKeywords: missing.slice(0, 8),
+      sections,
       resumeText,
       jobDescription: jobDesc,
     };
@@ -204,6 +279,17 @@ export default function AnalyzerPage() {
                 <h2 className="font-heading text-xl text-foreground">Upload Resume</h2>
               </div>
 
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg flex items-center gap-2"
+                >
+                  <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0" />
+                  <p className="font-paragraph text-sm text-destructive">{error}</p>
+                </motion.div>
+              )}
+
               <div
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -218,7 +304,7 @@ export default function AnalyzerPage() {
                 <input
                   type="file"
                   id="resume-upload"
-                  accept=".pdf,.docx"
+                  accept=".pdf,.docx,.txt"
                   onChange={handleFileChange}
                   className="hidden"
                 />
@@ -237,7 +323,7 @@ export default function AnalyzerPage() {
                         Drop your resume here or click to browse
                       </p>
                       <p className="font-paragraph text-sm text-foreground/60">
-                        Supports PDF and DOCX formats
+                        Supports PDF, DOCX, and TXT formats
                       </p>
                     </div>
                   )}
