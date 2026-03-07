@@ -74,14 +74,14 @@ export default function AnalyzerPage() {
 
     // Extract keywords from job description
     const jobKeywords = normalizedJob
-      .split(/[\s,;.!?()\\-\n]+/)
+      .split(/[\s,;.!?()\-\n]+/)
       .filter((word) => word.length > 2 && !/^[0-9]+$/.test(word))
       .filter((word, index, self) => self.indexOf(word) === index)
       .slice(0, 25);
 
     // Extract keywords from resume
     const resumeKeywords = normalizedResume
-      .split(/[\s,;.!?()\\-\n]+/)
+      .split(/[\s,;.!?()\-\n]+/)
       .filter((word) => word.length > 2 && !/^[0-9]+$/.test(word))
       .filter((word, index, self) => self.indexOf(word) === index);
 
