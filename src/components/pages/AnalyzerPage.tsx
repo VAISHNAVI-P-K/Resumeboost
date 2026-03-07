@@ -92,7 +92,7 @@ export default function AnalyzerPage() {
     const missing = jobKeywords.filter((keyword) => !matched.includes(keyword));
 
     // Calculate scores based on actual resume content analysis
-    const keywordMatchScore = jobKeywords.length > 0 ? Math.min(100, Math.round((matched.length / jobKeywords.length) * 100)) : 65;
+    const keywordMatchScore = jobKeywords.length > 0 ? Math.min(100, Math.max(1, Math.round((matched.length / jobKeywords.length) * 100))) : 65;
     
     // Check for common resume sections
     const hasSummary = /summary|objective|profile/.test(normalizedResume);
@@ -111,33 +111,33 @@ export default function AnalyzerPage() {
     
     // Calculate section completeness score
     const completeSections = [hasSummary, hasExperience, hasEducation, hasSkills].filter(Boolean).length;
-    const completenessScore = Math.round((completeSections / 4) * 100);
+    const completenessScore = Math.min(100, Math.max(1, Math.round((completeSections / 4) * 100)));
     
-    // Calculate skills match score - ensure it's never NaN
-    const skillsScore = Math.min(100, Math.max(0, Math.round((actionVerbCount / 15) * 100))) || 45;
+    // Calculate skills match score - ensure it's never NaN and always between 1-100
+    const skillsScore = Math.min(100, Math.max(1, Math.round((actionVerbCount / 15) * 100) || 45));
     
     // Calculate formatting score (based on length and structure)
     const lines = Math.max(1, resumeText.split('\n').length);
     const avgLineLength = resumeText.length / lines;
-    const formattingScore = Math.min(100, Math.max(0, Math.round((lines / 30) * 50 + (avgLineLength > 20 && avgLineLength < 100 ? 50 : 20)))) || 55;
+    const formattingScore = Math.min(100, Math.max(1, Math.round((lines / 30) * 50 + (avgLineLength > 20 && avgLineLength < 100 ? 50 : 20)) || 55));
     
     // Calculate relevance score
-    const relevanceScore = hasMetrics ? Math.min(100, keywordMatchScore + 15) : keywordMatchScore;
+    const relevanceScore = Math.min(100, Math.max(1, hasMetrics ? Math.min(100, keywordMatchScore + 15) : keywordMatchScore));
     
-    // Calculate readability score - ensure it's never NaN
-    const readabilityScore = Math.min(100, Math.max(0, Math.round((lines / 50) * 100))) || 50;
+    // Calculate readability score - ensure it's never NaN and always between 1-100
+    const readabilityScore = Math.min(100, Math.max(1, Math.round((lines / 50) * 100) || 50));
 
-    // Calculate weighted score
-    const currentScore = Math.round(
+    // Calculate weighted score - ensure it's never NaN and always between 1-100
+    const currentScore = Math.min(100, Math.max(1, Math.round(
       (keywordMatchScore * 0.3 +
         skillsScore * 0.2 +
         formattingScore * 0.15 +
         completenessScore * 0.15 +
         relevanceScore * 0.1 +
         readabilityScore * 0.1)
-    );
+    )));
 
-    const potentialScore = Math.min(100, currentScore + (missing.length > 0 ? Math.min(20, missing.length * 2) : 10));
+    const potentialScore = Math.min(100, Math.max(1, currentScore + (missing.length > 0 ? Math.min(20, missing.length * 2) : 10)));
 
     // Determine section statuses
     const sections = [
