@@ -244,11 +244,6 @@ export default function AnalyzerPage() {
     }, 2000);
   };
 
-  const jobKeywords = jobDescription
-    .toLowerCase()
-    .split(/[\s,;.!?]+/)
-    .filter((word) => word.length > 3);
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -337,52 +332,6 @@ export default function AnalyzerPage() {
                 >
                   Remove file
                 </button>
-              )}
-
-              {/* Keyword Analysis Section */}
-              {resumeFile && jobDescription && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="mt-8 pt-8 border-t border-foreground/10"
-                >
-                  <h3 className="font-heading text-base text-foreground mb-4">Keyword Analysis Preview</h3>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <p className="font-paragraph text-xs text-foreground/60 mb-2">Keywords Found</p>
-                      <div className="flex flex-wrap gap-2">
-                        {jobKeywords
-                          .slice(0, 6)
-                          .map((keyword, idx) => (
-                            <span
-                              key={idx}
-                              className="px-3 py-1 bg-accent/10 text-accent rounded-full font-paragraph text-xs"
-                            >
-                              {keyword}
-                            </span>
-                          ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <p className="font-paragraph text-xs text-foreground/60 mb-2">Analysis Metrics</p>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-primary/5 rounded-lg p-3">
-                          <p className="font-paragraph text-xs text-foreground/60">Total Keywords</p>
-                          <p className="font-heading text-lg text-primary">
-                            {jobKeywords.length}
-                          </p>
-                        </div>
-                        <div className="bg-secondary/5 rounded-lg p-3">
-                          <p className="font-paragraph text-xs text-foreground/60">Analysis Ready</p>
-                          <p className="font-heading text-lg text-secondary">✓</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
               )}
             </div>
 
