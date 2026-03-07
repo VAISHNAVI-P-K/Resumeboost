@@ -63,7 +63,7 @@ export default function Header() {
           <button
             className="md:hidden p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label="Toggle navigation menu" // ✅ FIXED: Improved aria-label
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6 text-foreground" />
@@ -98,10 +98,13 @@ export default function Header() {
                     {link.label}
                   </Link>
                 ))}
-                <Link to="/analyzer" onClick={() => setMobileMenuOpen(false)}>
-                  <button className="w-full bg-primary text-primary-foreground font-heading text-sm px-6 py-3 rounded-[12px] shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
-                    Analyze Resume
-                  </button>
+                {/* ✅ FIXED: Replace Link+Button with just Link that looks like button */}
+                <Link 
+                  to="/analyzer" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full bg-primary text-primary-foreground font-heading text-sm px-6 py-3 rounded-[12px] shadow-[0_8px_20px_rgba(0,0,0,0.06)] flex items-center justify-center hover:bg-primary/90 transition-colors"
+                >
+                  Analyze Resume
                 </Link>
               </nav>
             </motion.div>
