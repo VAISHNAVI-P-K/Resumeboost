@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { TrendingUp, Target, FileText, CheckCircle, AlertCircle, Download, ArrowRight, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useResumeStore } from '@/stores/resumeStore';
@@ -12,6 +12,7 @@ export default function ResultsPage() {
   const analysis = useResumeStore((state) => state.analysis);
   const clearAnalysis = useResumeStore((state) => state.clearAnalysis);
   const [showReportModal, setShowReportModal] = useState(false);
+  const reportContentRef = useRef<HTMLDivElement>(null);
 
   // Redirect to analyzer if no analysis data
   if (!analysis) {
@@ -50,6 +51,214 @@ export default function ResultsPage() {
     if (score >= 71) return 'bg-accent';
     if (score >= 41) return 'bg-secondary';
     return 'bg-destructive';
+  };
+
+  const handlePrintPDF = () => {
+    if (!reportContentRef.current) return;
+
+    const printWindow = window.open('', '', 'height=800,width=1000');
+    if (!printWindow) {
+      alert('Please allow pop-ups to download the PDF');
+      return;
+    }
+
+    const reportContent = reportContentRef.current.innerHTML;
+    const styles = `
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        body {
+          font-family: 'Inter', sans-serif;
+          color: #111827;
+          line-height: 1.5;
+          background: white;
+          padding: 40px;
+        }
+        h1, h2, h3 {
+          font-family: 'Space Grotesk', sans-serif;
+          margin-bottom: 16px;
+          margin-top: 24px;
+        }
+        h1 {
+          font-size: 28px;
+          font-weight: 700;
+        }
+        h2 {
+          font-size: 22px;
+          font-weight: 700;
+        }
+        h3 {
+          font-size: 18px;
+          font-weight: 700;
+        }
+        p {
+          margin-bottom: 12px;
+          font-size: 14px;
+        }
+        .bg-background {
+          background-color: #f8fafc;
+          padding: 16px;
+          border-radius: 8px;
+          margin-bottom: 12px;
+        }
+        .bg-accent {
+          color: #10b981;
+        }
+        .text-accent {
+          color: #10b981;
+        }
+        .text-destructive {
+          color: #ef4444;
+        }
+        .text-secondary {
+          color: #4f46e5;
+        }
+        .space-y-3 > * + * {
+          margin-top: 12px;
+        }
+        .space-y-4 > * + * {
+          margin-top: 16px;
+        }
+        .space-y-8 > * + * {
+          margin-top: 32px;
+        }
+        .flex {
+          display: flex;
+        }
+        .gap-2 {
+          gap: 8px;
+        }
+        .gap-3 {
+          gap: 12px;
+        }
+        .items-center {
+          align-items: center;
+        }
+        .justify-between {
+          justify-content: space-between;
+        }
+        .flex-wrap {
+          flex-wrap: wrap;
+        }
+        .border {
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 16px;
+          margin-bottom: 12px;
+        }
+        .border-t {
+          border-top: 1px solid #e2e8f0;
+          padding-top: 24px;
+          margin-top: 24px;
+        }
+        .font-bold {
+          font-weight: 700;
+        }
+        .text-center {
+          text-align: center;
+        }
+        .text-xs {
+          font-size: 12px;
+        }
+        .text-sm {
+          font-size: 14px;
+        }
+        .text-base {
+          font-size: 16px;
+        }
+        .text-lg {
+          font-size: 18px;
+        }
+        .mb-2 {
+          margin-bottom: 8px;
+        }
+        .mb-3 {
+          margin-bottom: 12px;
+        }
+        .mb-4 {
+          margin-bottom: 16px;
+        }
+        .mb-6 {
+          margin-bottom: 24px;
+        }
+        .mt-0\.5 {
+          margin-top: 2px;
+        }
+        .inline-block {
+          display: inline-block;
+        }
+        .px-2 {
+          padding-left: 8px;
+          padding-right: 8px;
+        }
+        .py-1 {
+          padding-top: 4px;
+          padding-bottom: 4px;
+        }
+        .px-3 {
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+        .py-2 {
+          padding-top: 8px;
+          padding-bottom: 8px;
+        }
+        .rounded {
+          border-radius: 4px;
+        }
+        .rounded-lg {
+          border-radius: 8px;
+        }
+        .grid {
+          display: grid;
+        }
+        .grid-cols-1 {
+          grid-template-columns: 1fr;
+        }
+        .gap-4 {
+          gap: 16px;
+        }
+        .w-5 {
+          width: 20px;
+          height: 20px;
+        }
+        .flex-shrink-0 {
+          flex-shrink: 0;
+        }
+        @media print {
+          body {
+            padding: 20px;
+          }
+          .no-print {
+            display: none;
+          }
+        }
+      </style>
+    `;
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>ATS Analysis Report</title>
+        ${styles}
+      </head>
+      <body>
+        <h1 style="text-align: center; margin-bottom: 32px;">Complete ATS Analysis Report</h1>
+        ${reportContent}
+      </body>
+      </html>
+    `);
+    printWindow.document.close();
+
+    // Wait for content to load before printing
+    setTimeout(() => {
+      printWindow.print();
+    }, 250);
   };
 
   return (
@@ -353,7 +562,7 @@ export default function ResultsPage() {
             </div>
 
             {/* Modal Content */}
-            <div className="p-8 space-y-8">
+            <div className="p-8 space-y-8" ref={reportContentRef}>
               {/* Executive Summary */}
               <div>
                 <h3 className="font-heading text-xl text-foreground mb-4">Executive Summary</h3>
@@ -549,17 +758,7 @@ export default function ResultsPage() {
                 Close
               </button>
               <button
-                onClick={() => {
-                  const element = document.querySelector('[class*="modal"]');
-                  if (element) {
-                    const printWindow = window.open('', '', 'height=600,width=800');
-                    if (printWindow) {
-                      printWindow.document.write(element.innerHTML);
-                      printWindow.document.close();
-                      printWindow.print();
-                    }
-                  }
-                }}
+                onClick={handlePrintPDF}
                 className="px-6 py-2 bg-primary text-primary-foreground font-heading text-sm rounded-lg hover:bg-primary/90 transition-colors"
               >
                 Print / Save as PDF
