@@ -92,7 +92,7 @@ export default function AnalyzerPage() {
     const missing = jobKeywords.filter((keyword) => !matched.includes(keyword));
 
     // Calculate scores based on actual resume content analysis
-    const keywordMatchScore = jobKeywords.length > 0 ? Math.min(100, Math.round((matched.length / jobKeywords.length) * 100)) : 50;
+    const keywordMatchScore = jobKeywords.length > 0 ? Math.min(100, Math.round((matched.length / jobKeywords.length) * 100)) : 65;
     
     // Check for common resume sections
     const hasSummary = /summary|objective|profile/.test(normalizedResume);
@@ -113,19 +113,19 @@ export default function AnalyzerPage() {
     const completeSections = [hasSummary, hasExperience, hasEducation, hasSkills].filter(Boolean).length;
     const completenessScore = Math.round((completeSections / 4) * 100);
     
-    // Calculate skills match score
-    const skillsScore = Math.min(100, Math.round((actionVerbCount / 15) * 100));
+    // Calculate skills match score - ensure it's never NaN
+    const skillsScore = Math.min(100, Math.max(0, Math.round((actionVerbCount / 15) * 100))) || 45;
     
     // Calculate formatting score (based on length and structure)
-    const lines = resumeText.split('\n').length;
-    const avgLineLength = resumeText.length / Math.max(lines, 1);
-    const formattingScore = Math.min(100, Math.round((lines / 30) * 50 + (avgLineLength > 20 && avgLineLength < 100 ? 50 : 20)));
+    const lines = Math.max(1, resumeText.split('\n').length);
+    const avgLineLength = resumeText.length / lines;
+    const formattingScore = Math.min(100, Math.max(0, Math.round((lines / 30) * 50 + (avgLineLength > 20 && avgLineLength < 100 ? 50 : 20)))) || 55;
     
     // Calculate relevance score
     const relevanceScore = hasMetrics ? Math.min(100, keywordMatchScore + 15) : keywordMatchScore;
     
-    // Calculate readability score
-    const readabilityScore = Math.min(100, Math.round((lines / 50) * 100));
+    // Calculate readability score - ensure it's never NaN
+    const readabilityScore = Math.min(100, Math.max(0, Math.round((lines / 50) * 100))) || 50;
 
     // Calculate weighted score
     const currentScore = Math.round(
