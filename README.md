@@ -1,187 +1,147 @@
-# Project Title: ResumeBoost – AI ATS Resume Analyzer Platform
-Week-3 Internship Project : Website Development Project
+# Wixstro - Wix Astro Template
+
+A modern, full-featured Wix Astro template built with React, TypeScript, and Tailwind CSS. This template provides a solid foundation for building dynamic, interactive websites with Wix's powerful ecosystem.
+
+## 🚀 Features
+
+- **Astro Framework** - Modern static site generator with server-side rendering
+- **React Integration** - Full React support with JSX components
+- **TypeScript** - Type-safe development experience
+- **Tailwind CSS** - Utility-first CSS framework with custom components
+- **Wix Integration** - Seamless integration with Wix services and APIs
+- **Modern UI Components** - Radix UI components with custom styling
+- **Authentication** - Built-in member authentication and protected routes
+- **CMS Integration** - Content management system integration
+- **Client-side Routing** - React Router for seamless navigation
+- **Responsive Design** - Mobile-first responsive design
+- **Testing** - Vitest testing framework setup
+- **Development Tools** - ESLint, TypeScript checking, and more
+
+## 🛠️ Tech Stack
+
+- **Framework**: Astro 5.8.0
+- **Frontend**: React 18.3.0
+- **Styling**: Tailwind CSS 3.4.14
+- **Language**: TypeScript 5.8.3
+- **UI Components**: Radix UI
+- **State Management**: Zustand
+- **Forms**: React Hook Form with Zod validation
+- **Testing**: Vitest
+- **Build Tool**: Vite
+- **Deployment**: Cloudflare
+
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (version 18 or higher)
+- npm or yarn package manager
+- Wix account and site
 
+### Installation
+
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-Project Website Link : https://resumeboost-ai.lovable.app/
+2. **Set up environment variables**:
+   ```bash
+   npm run env
+   ```
 
+3. **Start development server**:
+   ```bash
+   npm run dev
+   ```
 
-## Project Description
+The development server will start and you can view your site at `http://localhost:4321`.
 
-This project presents **ResumeBoost**, a web-based platform that analyzes a user's uploaded resume and evaluates it for **Applicant Tracking System (ATS) compatibility** used by modern recruiters.
+## 📁 Project Structure
 
-Users can upload or paste their resume into the platform, and the system automatically performs an in-depth analysis based on ATS standards. The platform evaluates **keyword relevance, resume structure, formatting quality, and recruiter readability**.
+```
+main/
+├── src/
+│   ├── components/          # React components
+│   │   ├── ui/             # Reusable UI components
+│   │   ├── Head.tsx        # Page head component
+│   │   └── Router.tsx      # Routing component
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utility functions
+│   ├── pages/              # Astro pages
+│   └── styles/             # Global styles
+├── integrations/           # Wix integrations
+│   ├── cms/               # CMS integration
+│   └── members/           # Member authentication
+├── public/                # Static assets
+└── eslint-rules/          # Custom ESLint rules
+```
 
-After the analysis is completed, ResumeBoost generates a **detailed resume evaluation report**, including an **ATS compatibility score, improvement suggestions, and keyword insights**. Users can also **download the full resume analysis report** for further review and resume improvement.
+## 🎨 UI Components
 
-The platform helps job seekers understand how their resume performs in automated hiring systems and provides actionable insights to improve **resume quality, ATS compatibility, and recruiter visibility**.
+This template includes a comprehensive set of UI components built with Radix UI and styled with Tailwind CSS:
 
+- **Layout**: Accordion, Collapsible, Tabs, Sheet
+- **Forms**: Input, Select, Checkbox, Radio Group, Switch
+- **Navigation**: Navigation Menu, Menubar, Breadcrumb
+- **Feedback**: Alert, Toast, Progress, Skeleton
+- **Overlays**: Dialog, Popover, Tooltip, Hover Card
+- **Data Display**: Table, Card, Badge, Avatar
+- **Interactive**: Button, Toggle, Slider, Command
 
+## 🔧 Available Scripts
 
-## Project Objective
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run release` - Release to Wix
+- `npm run env` - Pull environment variables
+- `npm run check` - Type check with Astro
+- `npm run test:run` - Run tests
+- `npm install` - Install dependencies
 
-• Many companies use **Applicant Tracking Systems (ATS)** to filter resumes before recruiters review them.
+## 🧪 Testing
 
-• Poor formatting, missing keywords, and weak resume structure can cause resumes to be rejected automatically.
+The project includes Vitest for testing:
 
-• The objective of this project is to design a platform that allows users to **upload their resume, analyze it instantly, and receive a structured ATS evaluation report**.
+```bash
+npm run test:run
+```
 
-• The system helps users **optimize their resume and download a complete analysis report with improvement recommendations**.
+## 📱 Responsive Design
 
+The template is built with a mobile-first approach and includes:
 
+- Responsive breakpoints
+- Touch-friendly interactions
+- Optimized images
+- Flexible layouts
 
-## Project Workflow
+## 🚀 Deployment
 
-### 1. Platform Design & Concept Development
+The template is configured for deployment on Cloudflare:
 
-▪︎ Defined the concept of an **AI-powered ATS Resume Analysis Platform**
+```bash
+npm run build
+```
 
-▪︎ Designed a **Resume Evaluation and Scoring System**
+## 🤝 Contributing
 
-▪︎ Planned the workflow for **resume upload → analysis → report generation → report download**
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
 
-▪︎ Structured the platform architecture and analysis modules
+## 🆘 Support
 
+For support and questions:
 
+- Check the [Wix Developer Documentation](https://dev.wix.com/)
+- Review the [Astro Documentation](https://docs.astro.build/)
 
-### 2. User Interface & Website Development
 
-▪︎ Designed a modern, responsive interface for ResumeBoost
+---
 
-▪︎ Implemented an intuitive **resume upload and input section**
-
-▪︎ Developed a professional dashboard layout for displaying analysis results
-
-▪︎ Ensured accessibility and user-friendly interaction
-
-
-
-### 3. Resume Analysis Framework
-
-The system evaluates user resumes based on key ATS compatibility factors including:
-
-• Keyword Relevance to Job Roles  
-• Resume Formatting Structure  
-• Section Organization  
-• Bullet Point Quality  
-• Action Verb Usage  
-• Content Readability
-
-
-
-### 4. ATS Keyword Matching System
-
-▪︎ Analyzes keywords present in the uploaded resume
-
-▪︎ Identifies **missing or weak industry keywords**
-
-▪︎ Calculates **keyword match percentage**
-
-▪︎ Suggests relevant keywords to improve ATS compatibility
-
-
-
-### 5. Resume Scoring & Improvement Suggestions
-
-▪︎ Generates an **ATS Resume Score (0–100%)**
-
-▪︎ Highlights formatting issues and structural problems
-
-▪︎ Provides improvement recommendations such as:
-
-• Adding relevant keywords  
-• Improving bullet points  
-• Including measurable achievements  
-• Optimizing resume sections for ATS readability
-
-
-
-### 6. Resume Analysis Report Generation
-
-▪︎ Generates a **complete ATS analysis report**
-
-▪︎ Displays resume performance metrics in a dashboard
-
-▪︎ Summarizes improvement suggestions and keyword insights
-
-▪︎ Allows users to **download the full resume analysis report for future reference**
-
-
-
-## Platform Features
-
-▪︎ **Upload and analyze user resumes**
-
-▪︎ **ATS Resume Compatibility Score**
-
-▪︎ **Real-time keyword matching system**
-
-▪︎ **Resume formatting and structure analysis**
-
-▪︎ **Detailed resume improvement suggestions**
-
-▪︎ **Interactive analysis dashboard**
-
-▪︎ **Downloadable full resume analysis report**
-
-▪︎ **Modern, responsive, and user-friendly interface**
-
-
-
-## Tools and Technologies Used
-
-▪︎ **React / Next.js** – Frontend development framework
-
-▪︎ **Tailwind CSS** – UI styling and responsive design
-
-▪︎ **JavaScript / TypeScript** – Application logic
-
-▪︎ **Node.js** – Backend services and API integration
-
-▪︎ **AI / NLP Keyword Matching** – Resume content analysis
-
-▪︎ **GitHub** – Version control and project management
-
-
-
-## Output
-
-▪︎ Developed a **fully functional ResumeBoost website platform**
-
-▪︎ Implemented a **resume upload and analysis system**
-
-▪︎ Created an **ATS scoring and keyword analysis engine**
-
-▪︎ Designed an **interactive resume evaluation dashboard**
-
-▪︎ Enabled **downloadable resume analysis reports** for users
-
-▪︎ Structured a scalable platform for future AI integration
-
-
-
-## Key Insights
-
-▪︎ Many resumes fail ATS systems due to **missing keywords and poor formatting**
-
-▪︎ Resume analysis tools help job seekers **understand recruiter expectations**
-
-▪︎ Automated resume evaluation improves **resume optimization efficiency**
-
-▪︎ Data-driven feedback enables users to **increase their chances of passing ATS filters**
-
-
-
-## Conclusion
-
-This project demonstrates the development of **ResumeBoost**, an AI-powered platform that analyzes user resumes and evaluates their compatibility with Applicant Tracking Systems.
-
-By allowing users to **upload their resume, receive a detailed ATS analysis, and download a full evaluation report**, ResumeBoost provides a practical solution for improving resume effectiveness.
-
-The project establishes a foundation for future enhancements such as:
-
-• AI-powered resume rewriting  
-• Advanced keyword intelligence  
-• Job description matching  
-• Personalized resume optimization recommendations  
-
-ResumeBoost aims to make resume preparation **smarter, data-driven, and ATS-ready for modern job applications**.
+Built with ❤️ using Wix Vibe, Astro, and modern web technologies.

@@ -5,21 +5,15 @@ import { useLocation } from 'react-router-dom';
 export function ScrollToTop() {
   const location = useLocation();
   const prevLocationRef = useRef<string | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null); // ✅ FIXED: Add timeout reference
 
   useEffect(() => {
-    // Clean up previous timeout
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
     // Check if this is the same page (same pathname)
     const isSamePage = prevLocationRef.current === location.pathname;
 
     // Check if the URL has a hash
     if (location.hash) {
       // URL with hash: Wait 100ms and then call scrollIntoView() to the target element
-      timeoutRef.current = setTimeout(() => {
+      setTimeout(() => {
         const element = document.getElementById(location.hash.slice(1));
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
@@ -37,14 +31,7 @@ export function ScrollToTop() {
 
     // Update the previous location reference
     prevLocationRef.current = location.pathname;
-
-    // Cleanup function
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [location.pathname, location.hash]);
+  }, [location]);
 
   return null;
 }

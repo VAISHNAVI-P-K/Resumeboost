@@ -29,35 +29,35 @@ const router = createBrowserRouter([
         element: <HomePage />,
         routeMetadata: {
           pageIdentifier: 'home',
-        } as const, // ✅ FIXED: Add 'as const' for type safety
+        },
       },
       {
         path: "analyzer",
         element: <AnalyzerPage />,
         routeMetadata: {
           pageIdentifier: 'analyzer',
-        } as const, // ✅ FIXED: Add 'as const' for type safety
+        },
       },
       {
         path: "results",
         element: <ResultsPage />,
         routeMetadata: {
           pageIdentifier: 'results',
-        } as const, // ✅ FIXED: Add 'as const' for type safety
+        },
       },
       {
         path: "templates",
         element: <TemplatesPage />,
         routeMetadata: {
           pageIdentifier: 'templates',
-        } as const, // ✅ FIXED: Add 'as const' for type safety
+        },
       },
       {
         path: "contact",
         element: <ContactPage />,
         routeMetadata: {
           pageIdentifier: 'contact',
-        } as const, // ✅ FIXED: Add 'as const' for type safety
+        },
       },
       {
         path: "*",
