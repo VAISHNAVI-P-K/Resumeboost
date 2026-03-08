@@ -53,6 +53,13 @@ export default function AnalyzerPage() {
     }
   };
 
+  const handleUploadClick = () => {
+    const fileInput = document.getElementById('resume-upload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
   const extractTextFromFile = async (file: File): Promise<string> => {
     if (file.type === 'text/plain') {
       return await file.text();
@@ -290,7 +297,8 @@ export default function AnalyzerPage() {
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
-                className={`border-2 border-dashed rounded-[12px] p-12 text-center transition-colors ${
+                onClick={handleUploadClick}
+                className={`border-2 border-dashed rounded-[12px] p-12 text-center transition-colors cursor-pointer ${
                   dragActive
                     ? 'border-primary bg-primary/5'
                     : 'border-foreground/10 hover:border-primary/50'
@@ -303,26 +311,24 @@ export default function AnalyzerPage() {
                   onChange={handleFileChange}
                   className="hidden"
                 />
-                <label htmlFor="resume-upload" className="cursor-pointer">
-                  <div className="w-16 h-16 bg-primary/10 rounded-[12px] flex items-center justify-center mx-auto mb-4">
-                    <Upload className="w-8 h-8 text-primary" />
+                <div className="w-16 h-16 bg-primary/10 rounded-[12px] flex items-center justify-center mx-auto mb-4">
+                  <Upload className="w-8 h-8 text-primary" />
+                </div>
+                {resumeFile ? (
+                  <div>
+                    <p className="font-heading text-base text-foreground mb-2">{resumeFile.name}</p>
+                    <p className="font-paragraph text-sm text-accent">File uploaded successfully</p>
                   </div>
-                  {resumeFile ? (
-                    <div>
-                      <p className="font-heading text-base text-foreground mb-2">{resumeFile.name}</p>
-                      <p className="font-paragraph text-sm text-accent">File uploaded successfully</p>
-                    </div>
-                  ) : (
-                    <div>
-                      <p className="font-heading text-base text-foreground mb-2">
-                        Drop your resume here or click to browse
-                      </p>
-                      <p className="font-paragraph text-sm text-foreground/60">
-                        Supports PDF, DOCX, and TXT formats
-                      </p>
-                    </div>
-                  )}
-                </label>
+                ) : (
+                  <div>
+                    <p className="font-heading text-base text-foreground mb-2">
+                      Drop your resume here or click to browse
+                    </p>
+                    <p className="font-paragraph text-sm text-foreground/60">
+                      Supports PDF, DOCX, and TXT formats
+                    </p>
+                  </div>
+                )}
               </div>
 
               {resumeFile && (
